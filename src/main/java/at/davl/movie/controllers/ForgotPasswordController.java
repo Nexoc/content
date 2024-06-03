@@ -94,7 +94,6 @@ public class ForgotPasswordController {
         userRepository.updatePasswordByEmail(email, encodedPassword);
 
         return ResponseEntity.ok("New password has been changed");
-
     }
 
 

@@ -1,5 +1,6 @@
 package at.davl.movie.auth.entities;
 
+import at.davl.movie.models.Folder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -53,6 +55,9 @@ public class User implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private ForgotPassword forgotPassword;
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private Set<Folder> folders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
