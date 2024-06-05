@@ -2,25 +2,19 @@ package at.davl.movie.service;
 
 import at.davl.movie.dto.ContentDto;
 
-import at.davl.movie.dto.MovieDto;
 import at.davl.movie.exceptions.ContentNotFoundException;
 import at.davl.movie.exceptions.FileExistsException;
 import at.davl.movie.exceptions.MovieNotFoundException;
 import at.davl.movie.models.Content;
-import at.davl.movie.models.Movie;
 import at.davl.movie.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class ContentServiceImpl implements ContentService{
