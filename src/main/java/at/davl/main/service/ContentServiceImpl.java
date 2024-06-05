@@ -2,10 +2,12 @@ package at.davl.main.service;
 
 import at.davl.main.dto.ContentDto;
 
+import at.davl.main.dto.FolderDto;
 import at.davl.main.exceptions.ContentNotFoundException;
 import at.davl.main.exceptions.FileExistsException;
 import at.davl.main.exceptions.MovieNotFoundException;
 import at.davl.main.models.Content;
+import at.davl.main.models.Folder;
 import at.davl.main.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -128,9 +130,29 @@ public class ContentServiceImpl implements ContentService{
             // add this dto to the list
             contentDtos.add(response);
         }
-
         return contentDtos;
     }
+
+    @Override
+    public List<ContentDto> getAllContentByFolder(Folder folder) {
+        List<Content> contents = contentRepository.findAllContentsByFolder(folder);
+        List<ContentDto> contentDtos = new ArrayList<>();
+        for (Content content : contents) {
+            String posterUrl = baseUrl + "/file/" + content.getScreenshot();
+            ContentDto response = new ContentDto(
+                    content.getContentId(),
+                    content.getTitle(),
+                    content.getContent(),
+                    content.getPublishedOn(),
+                    content.getScreenshot(),
+                    posterUrl,
+                    content.getFolder()
+            );
+            contentDtos.add(response);
+        }
+        return contentDtos;
+    }
+
 
     @Override
     public ContentDto updateContent(Integer contentId, ContentDto contentDto, MultipartFile file) throws IOException {
@@ -164,7 +186,7 @@ public class ContentServiceImpl implements ContentService{
         // 5. save the movie object -> return saved movie obj
         Content updatedContent = contentRepository.save(content);
 
-        // 6 generate screenshotUrl for it
+        // 6 screenshotUrl for it
         String screenshotUrl = baseUrl + "/file/" + fileName;
 
         // 7. map to ContentDto and return it

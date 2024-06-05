@@ -1,6 +1,7 @@
 package at.davl.main.service;
 
 
+import at.davl.main.auth.entities.User;
 import at.davl.main.dto.FolderDto;
 
 import java.io.IOException;
@@ -13,6 +14,8 @@ public interface FolderService {
     FolderDto getFolder(Integer folderId);
 
     List<FolderDto> getAllFolder();
+
+    List<FolderDto> getAllFoldersByUser (User user);
 
     FolderDto updateFolder(Integer folderId, FolderDto folderDto) throws IOException;
 
