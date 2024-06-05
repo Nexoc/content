@@ -48,6 +48,7 @@ public class ContentController {
         return ResponseEntity.ok(contentService.getAllContent());
     }
 
+
     @PutMapping("/update/{contentId}")
     public ResponseEntity<ContentDto> updateContentHandler(@PathVariable Integer contentId,
                                                        @RequestPart MultipartFile file,
@@ -69,9 +70,9 @@ public class ContentController {
     convert from String to contentDTO
     */
     private ContentDto convertToContentDto(String contentDtoObj) throws JsonProcessingException {
-        // mapper (we need it for a map value to the MovieDto class)
+        // mapper (we need it for a map value to the contentDto class)
         ObjectMapper objectMapper = new ObjectMapper();
-        // it mapped movie to MovieDto
+        // it is mapped content to contentDto
         ContentDto contentDto = objectMapper.readValue(contentDtoObj, ContentDto.class);
         return contentDto;
     }

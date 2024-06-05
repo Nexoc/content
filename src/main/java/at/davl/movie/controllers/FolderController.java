@@ -63,7 +63,7 @@ public class FolderController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/{folderId}")
-    public ResponseEntity<String> deleteMovieHandler(@PathVariable Integer folderId) throws IOException {
+    public ResponseEntity<String> deleteFolderHandler(@PathVariable Integer folderId) throws IOException {
         return ResponseEntity.ok(folderService.deleteFolder(folderId));
     }
 
@@ -72,9 +72,9 @@ public class FolderController {
     convert from String to folderDTO
      */
     private FolderDto convertToFolderDto(String folderDtoObj) throws JsonProcessingException {
-        // mapper (we need it for a map value to the MovieDto class)
+        // mapper (we need it for a map value to the folderDto class)
         ObjectMapper objectMapper = new ObjectMapper();
-        // it mapped movie to MovieDto
+        // it is mapped folder to FolderDto
         FolderDto folderDto = objectMapper.readValue(folderDtoObj, FolderDto.class);
         return folderDto;
     }
