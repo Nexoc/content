@@ -90,8 +90,8 @@ public class FolderServiceImpl implements FolderService{
     }
 
     @Override
-    public List<FolderDto> getAllFoldersByUser(User user) {
-        List<Folder> folders = folderRepository.findAllFoldersByUser(user);
+    public List<FolderDto> getAllFoldersByUserId(Integer userId) {
+        List<Folder> folders = folderRepository.findAllFoldersByUserId(userId);
         List<FolderDto> folderDtos = new ArrayList<>();
         for (Folder folder : folders) {
             FolderDto response = new FolderDto(

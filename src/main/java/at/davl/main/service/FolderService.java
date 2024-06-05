@@ -15,7 +15,7 @@ public interface FolderService {
 
     List<FolderDto> getAllFolder();
 
-    List<FolderDto> getAllFoldersByUser (User user);
+    List<FolderDto> getAllFoldersByUserId (Integer userId);
 
     FolderDto updateFolder(Integer folderId, FolderDto folderDto) throws IOException;
 

@@ -134,9 +134,12 @@ public class ContentServiceImpl implements ContentService{
     }
 
     @Override
-    public List<ContentDto> getAllContentByFolder(Folder folder) {
-        List<Content> contents = contentRepository.findAllContentsByFolder(folder);
+    public List<ContentDto> getAllContentByFolderId(Integer folderId) {
+
+        List<Content> contents = contentRepository.findAllContentsByFolderId(folderId);
+
         List<ContentDto> contentDtos = new ArrayList<>();
+
         for (Content content : contents) {
             String posterUrl = baseUrl + "/file/" + content.getScreenshot();
             ContentDto response = new ContentDto(

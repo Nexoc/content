@@ -15,7 +15,7 @@ public interface ContentService {
 
     List<ContentDto> getAllContent();
 
-    List<ContentDto> getAllContentByFolder(Folder folder);
+    List<ContentDto> getAllContentByFolderId(Integer folderId);
 
     ContentDto updateContent(Integer contentId, ContentDto contentDto, MultipartFile file) throws IOException;
 

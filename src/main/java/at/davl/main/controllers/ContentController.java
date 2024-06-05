@@ -1,8 +1,10 @@
 package at.davl.main.controllers;
 
 import at.davl.main.dto.ContentDto;
+import at.davl.main.dto.FolderDto;
 import at.davl.main.exceptions.EmptyFileException;
 import at.davl.main.service.ContentService;
+import at.davl.main.service.FolderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,8 @@ public class ContentController {
 
     private final ContentService contentService;
 
-    public ContentController(ContentService contentService) {
+
+    public ContentController(ContentService contentService){
         this.contentService = contentService;
     }
 
@@ -37,17 +40,21 @@ public class ContentController {
     }
 
 
-
     @GetMapping("/{contentId}")
     public ResponseEntity<ContentDto> getContentHandler(@PathVariable Integer contentId){
         return ResponseEntity.ok(contentService.getContent(contentId));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @GetMapping("/all")
     public ResponseEntity<List<ContentDto>> getAllContentsHandler() {
         return ResponseEntity.ok(contentService.getAllContent());
     }
 
+    @GetMapping("/all/{folderId}")
+    public ResponseEntity<List<ContentDto>> getAllContentByFolderHandler(@PathVariable Integer folderId) {
+        return ResponseEntity.ok(contentService.getAllContentByFolderId(folderId));
+    }
 
     @PutMapping("/update/{contentId}")
     public ResponseEntity<ContentDto> updateContentHandler(@PathVariable Integer contentId,
