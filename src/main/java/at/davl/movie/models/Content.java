@@ -34,13 +34,13 @@ public class Content {
 
     // many screenshots
     @Column(nullable = true, name = "screenshots")
-    private Set<String> screenshot;
+    private String screenshot;
 
     @ManyToOne
     @JoinColumn(name="folderId", nullable=false)
     private Folder folder;
 
-    public Content(Integer contentId, String title, String content, Set<String> screenshot, Folder folder) {
+    public Content(Integer contentId, String title, String content, String screenshot, Folder folder) {
         this.title = title;
         this.content = content;
         this.publishedOn = LocalDateTime.now();

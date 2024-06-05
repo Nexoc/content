@@ -20,15 +20,14 @@ public class Folder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer folderId; //
+    private Integer folderId;
 
     @Column(nullable = false)
-    private Integer number; //
+    private Integer number;
 
     @ManyToOne
     @JoinColumn(name="userId", nullable=false)
     private User user;
-
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "folder")
     private Set<Content> contents;
