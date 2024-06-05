@@ -1,0 +1,18 @@
+package at.davl.main.dto;
+
+import at.davl.main.auth.entities.User;
+import at.davl.main.models.Content;
+import lombok.*;
+
+import java.util.Set;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class FolderDto {
+    private Integer folderId;
+    private Integer number;
+    private User user;
+    private Set<Content> contents;
+}

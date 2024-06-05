@@ -49,8 +49,6 @@ The following guides illustrate how to use some features concretely:
           }
 
 ### Intellij- run as root:
-+ intellij-idea-ultimate
-
 
 https://snapcraft.io/install/intellij-idea-ultimate/debian
 
@@ -59,15 +57,15 @@ sudo apt upgrade
 sudo apt install snapd
 sudo snap install core
 
-to install:
+### to install:
 sudo snap install intellij-idea-ultimate --classic
-// to run:
+### to run:
 intellij-idea-ultimate
 
 ### How to increase code font size in IntelliJ:
-++ Editor | General, and select Change font size with Command+Mouse Wheel
+  Editor | General, and select Change font size with Command+Mouse Wheel
 
-Setup ssh for github
+## Setup ssh for github
 
     https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/GitHub-SSH-Key-Setup-Config-Ubuntu-Linux
 
@@ -81,9 +79,9 @@ Test connection:
 ssh -T git@github.com
 
 
-GitHub-SSH-Key-Setup-Config-Ubuntu-Linux
-and git init
-git add
+### GitHub-SSH-Key-Setup-Config-Ubuntu-Linux
+git init
+git add .
 git commit -m "git init"
 git branch -M main
 and git remote set-url origin git@github.com:Nexoc/spring_boot3_security6_RESTfull_API.git
@@ -119,16 +117,18 @@ git push -u origin main
 ### docker
 
 docker compose up --build -d
-
 docker compose ps
+docker compose down
+
 docker ps -a
-
 docker rm mycontainer
-
 docker rm $(docker ps -qa)
 docker container prune -f
 
-
+### to get in
 docker exec -it mycontainer sh
 
 psql -U nexoc -d content -W
+
+### shows disk space in human-readable format
+df -h 
