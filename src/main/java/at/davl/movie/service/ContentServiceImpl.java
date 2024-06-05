@@ -8,6 +8,7 @@ import at.davl.movie.exceptions.MovieNotFoundException;
 import at.davl.movie.models.Content;
 import at.davl.movie.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Service
 public class ContentServiceImpl implements ContentService{
 
     private final ContentRepository contentRepository;
