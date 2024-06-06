@@ -7,6 +7,7 @@ import at.davl.main.service.ContentService;
 import at.davl.main.service.FolderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,21 +18,19 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/content")
+@RequestMapping("/api/v1/users/{userId}/folders/{folderId}/contents")
 public class ContentController {
 
+    @Autowired
     private final ContentService contentService;
-
 
     public ContentController(ContentService contentService){
         this.contentService = contentService;
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @PostMapping("/add-content")
     public ResponseEntity<ContentDto> addContentHandler(@RequestPart MultipartFile file,
                                                     @RequestPart String contentDto) throws IOException, EmptyFileException {
-
         if (file.isEmpty()) {
             throw new EmptyFileException("File is empty. Please send another file");
         }
@@ -39,9 +38,10 @@ public class ContentController {
         return new ResponseEntity<>(contentService.addContent(convertedDto, file), HttpStatus.CREATED);
     }
 
-
     @GetMapping("/{contentId}")
-    public ResponseEntity<ContentDto> getContentHandler(@PathVariable Integer contentId){
+    public ResponseEntity<ContentDto> getContentHandler(@PathVariable Integer userId,
+                                                        @PathVariable Integer folderId,
+                                                        @PathVariable Integer contentId){
         return ResponseEntity.ok(contentService.getContent(contentId));
     }
 
@@ -51,10 +51,6 @@ public class ContentController {
         return ResponseEntity.ok(contentService.getAllContent());
     }
 
-    @GetMapping("/all/{folderId}")
-    public ResponseEntity<List<ContentDto>> getAllContentByFolderHandler(@PathVariable Integer folderId) {
-        return ResponseEntity.ok(contentService.getAllContentByFolderId(folderId));
-    }
 
     @PutMapping("/update/{contentId}")
     public ResponseEntity<ContentDto> updateContentHandler(@PathVariable Integer contentId,
@@ -65,7 +61,6 @@ public class ContentController {
         ContentDto convertedContent = convertToContentDto(contentDtoObj);
         return ResponseEntity.ok(contentService.updateContent(contentId, convertedContent, file));
     }
-
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/{contentId}")

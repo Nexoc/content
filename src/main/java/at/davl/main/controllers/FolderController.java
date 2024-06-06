@@ -9,6 +9,7 @@ import at.davl.main.service.ContentService;
 import at.davl.main.service.FolderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,10 +20,12 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/folder")
+@RequestMapping("/api/v1/users/{userId}/folders")
 public class FolderController {
 
+    @Autowired
     private final FolderService folderService;
+    @Autowired
     private final ContentService contentService;
 
     public FolderController(FolderService folderService, ContentService contentService) {
@@ -42,6 +45,7 @@ public class FolderController {
         );
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @GetMapping("/{folderId}")
     public ResponseEntity<FolderDto> getFolderHandler(@PathVariable Integer folderId){
         return ResponseEntity.ok(folderService.getFolder(folderId));
@@ -53,14 +57,17 @@ public class FolderController {
         return ResponseEntity.ok(folderService.getAllFolder());
     }
 
-    @GetMapping("/all/{userId}")
+
+    @GetMapping
     public ResponseEntity<List<FolderDto>> getAllFoldersByUserIdHandler(@PathVariable Integer userId) {
         return ResponseEntity.ok(folderService.getAllFoldersByUserId(userId));
     }
 
+
     @PutMapping("/update/{folderId}")
-    public ResponseEntity<FolderDto> updateFolderHandler(@PathVariable Integer folderId,
-                                                       @RequestPart String folderDtoObj) throws IOException {
+    public ResponseEntity<FolderDto> updateFolderHandler(@PathVariable Integer userId,
+                                                         @PathVariable Integer folderId,
+                                                         @RequestPart String folderDtoObj) throws IOException {
         FolderDto folderDto = convertToFolderDto(folderDtoObj);
         return ResponseEntity.ok(folderService.updateFolder(folderId, folderDto));
     }
@@ -72,6 +79,11 @@ public class FolderController {
         return ResponseEntity.ok(folderService.deleteFolder(folderId));
     }
 
+    @GetMapping("/{folderId}/contents")
+    public ResponseEntity<List<ContentDto>> getAllContentByFolderHandler(@PathVariable Integer userId,
+                                                                         @PathVariable Integer folderId) {
+        return ResponseEntity.ok(contentService.getAllContentByFolderId(folderId));
+    }
 
     /*
     convert from String to folderDTO
@@ -83,8 +95,4 @@ public class FolderController {
         FolderDto folderDto = objectMapper.readValue(folderDtoObj, FolderDto.class);
         return folderDto;
     }
-
-
-
-
 }
