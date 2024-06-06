@@ -78,6 +78,4 @@ public class ContentController {
         ContentDto contentDto = objectMapper.readValue(contentDtoObj, ContentDto.class);
         return contentDto;
     }
-
-
 }
