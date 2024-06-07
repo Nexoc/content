@@ -29,10 +29,7 @@ public class ContentController {
     }
 
     @PostMapping("/add-content")
-    public ResponseEntity<ContentDto> addContentHandler(@PathVariable Integer userId,
-                                                        @PathVariable Integer folderId,
-                                                        @PathVariable Integer contentId,
-                                                        @RequestPart MultipartFile file,
+    public ResponseEntity<ContentDto> addContentHandler(@RequestPart MultipartFile file,
                                                         @RequestPart String contentDto) throws IOException, EmptyFileException {
         if (file.isEmpty()) {
             throw new EmptyFileException("File is empty. Please send another file");

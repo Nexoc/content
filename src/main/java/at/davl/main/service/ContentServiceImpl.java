@@ -3,12 +3,11 @@ package at.davl.main.service;
 import at.davl.main.dto.ContentDto;
 
 import at.davl.main.dto.FolderDto;
-import at.davl.main.exceptions.ContentNotFoundException;
-import at.davl.main.exceptions.FileExistsException;
-import at.davl.main.exceptions.MovieNotFoundException;
+import at.davl.main.exceptions.*;
 import at.davl.main.models.Content;
 import at.davl.main.models.Folder;
 import at.davl.main.repository.ContentRepository;
+import at.davl.main.repository.FolderRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +25,7 @@ public class ContentServiceImpl implements ContentService{
 
     private final ContentRepository contentRepository;
     private final FileService fileService;
+    private final FolderRepository folderRepository;
 
     @Value("${project.poster}")
     private String path;
@@ -33,9 +33,10 @@ public class ContentServiceImpl implements ContentService{
     @Value("${base.url}")
     private String baseUrl;
 
-    public ContentServiceImpl(ContentRepository contentRepository, FileService fileService) {
+    public ContentServiceImpl(ContentRepository contentRepository, FileService fileService, FolderRepository folderRepository) {
         this.contentRepository = contentRepository;
         this.fileService = fileService;
+        this.folderRepository = folderRepository;
     }
 
 
@@ -52,7 +53,8 @@ public class ContentServiceImpl implements ContentService{
         // 2. set the value of field "poster" as filename
         contentDto.setScreenshot(uploadedFileName);
 
-        // todo from folder Id find folder Class by folder ID
+        Integer folderId = contentDto.getFolderId();
+        Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
 
         // 3. map dto to movie object
         Content content = new Content(
@@ -61,7 +63,7 @@ public class ContentServiceImpl implements ContentService{
                 contentDto.getContent(),
                 LocalDateTime.now(),
                 contentDto.getScreenshot(),
-                contentDto.getFolder()
+                folder
                 );
 
 
@@ -79,7 +81,7 @@ public class ContentServiceImpl implements ContentService{
                 savedContent.getPublishedOn(),
                 savedContent.getScreenshot(),
                 posterUrl,
-                savedContent.getFolder()
+                savedContent.getFolder().getFolderId()
         );
 
         return response;
@@ -103,7 +105,7 @@ public class ContentServiceImpl implements ContentService{
                 content.getPublishedOn(),
                 content.getScreenshot(),
                 posterUrl,
-                content.getFolder()
+                content.getFolder().getFolderId()
         );
         return response;
     }
@@ -127,7 +129,7 @@ public class ContentServiceImpl implements ContentService{
                     content.getPublishedOn(),
                     content.getScreenshot(),
                     posterUrl,
-                    content.getFolder()
+                    content.getFolder().getFolderId()
             );
             // add this dto to the list
             contentDtos.add(response);
@@ -151,7 +153,7 @@ public class ContentServiceImpl implements ContentService{
                     content.getPublishedOn(),
                     content.getScreenshot(),
                     posterUrl,
-                    content.getFolder()
+                    content.getFolder().getFolderId()
             );
             contentDtos.add(response);
         }
@@ -178,6 +180,9 @@ public class ContentServiceImpl implements ContentService{
         // 3. set contentDto's screenshot value, according to step 2
         contentDto.setScreenshot(fileName);
 
+        Integer folderId = contentDto.getFolderId();
+        Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
+
         // 4. map it to Content object
         Content content = new Content(
                 cont.getContentId(),
@@ -185,7 +190,7 @@ public class ContentServiceImpl implements ContentService{
                 contentDto.getContent(),
                 contentDto.getPublishedOn(),
                 contentDto.getScreenshot(),
-                contentDto.getFolder()
+                folder
         );
 
         // 5. save the movie object -> return saved movie obj
@@ -202,7 +207,7 @@ public class ContentServiceImpl implements ContentService{
                 content.getPublishedOn(),
                 content.getScreenshot(),
                 screenshotUrl,
-                content.getFolder()
+                content.getFolder().getFolderId()
         );
         return response;
     }
@@ -216,10 +221,8 @@ public class ContentServiceImpl implements ContentService{
         Integer id = cont.getContentId();
         // 2. delete the file associated with this object
         Files.deleteIfExists(Paths.get(path + File.separator + cont.getScreenshot()));
-
         // 3. delete the content object
         contentRepository.delete(cont);
-
         return "Content has been deleted with id: " + id;
 
     }

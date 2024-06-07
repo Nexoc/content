@@ -21,6 +21,5 @@ public class ContentDto {
     private String screenshot;
     //path
     private String screenshotPath;
-    // todo folder ID
-    private Folder folder;
+    private Integer folderId;
 }
