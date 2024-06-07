@@ -29,12 +29,17 @@ public class ContentController {
     }
 
     @PostMapping("/add-content")
-    public ResponseEntity<ContentDto> addContentHandler(@RequestPart MultipartFile file,
-                                                    @RequestPart String contentDto) throws IOException, EmptyFileException {
+    public ResponseEntity<ContentDto> addContentHandler(@PathVariable Integer userId,
+                                                        @PathVariable Integer folderId,
+                                                        @PathVariable Integer contentId,
+                                                        @RequestPart MultipartFile file,
+                                                        @RequestPart String contentDto) throws IOException, EmptyFileException {
         if (file.isEmpty()) {
             throw new EmptyFileException("File is empty. Please send another file");
         }
         ContentDto convertedDto = convertToContentDto(contentDto);
+
+        // todo send to .addContent as a variable folderId
         return new ResponseEntity<>(contentService.addContent(convertedDto, file), HttpStatus.CREATED);
     }
 

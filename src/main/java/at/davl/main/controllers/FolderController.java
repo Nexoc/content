@@ -45,13 +45,13 @@ public class FolderController {
         );
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
+    // @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @GetMapping("/{folderId}")
     public ResponseEntity<FolderDto> getFolderHandler(@PathVariable Integer folderId){
         return ResponseEntity.ok(folderService.getFolder(folderId));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
+    // @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @GetMapping("/all")
     public ResponseEntity<List<FolderDto>> getAllFoldersHandler() {
         return ResponseEntity.ok(folderService.getAllFolder());
@@ -73,9 +73,10 @@ public class FolderController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    // @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/{folderId}")
-    public ResponseEntity<String> deleteFolderHandler(@PathVariable Integer folderId) throws IOException {
+    public ResponseEntity<String> deleteFolderHandler(@PathVariable Integer userId,
+                                                      @PathVariable Integer folderId) throws IOException {
         return ResponseEntity.ok(folderService.deleteFolder(folderId));
     }
 

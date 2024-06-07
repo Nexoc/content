@@ -126,7 +126,7 @@ docker rm $(docker ps -qa)
 docker container prune -f
 
 ### to get in
-docker exec -it mycontainer sh
+docker exec -it postgres_content sh
 
 psql -U nexoc -d content -W
 
