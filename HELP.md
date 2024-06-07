@@ -127,7 +127,6 @@ docker container prune -f
 
 ### to get in
 docker exec -it postgres_content sh
-
 psql -U nexoc -d content -W
 
 ### shows disk space in human-readable format

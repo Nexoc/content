@@ -33,7 +33,7 @@ spring:
             enable: true
 
 project:
-  poster: poster/
+  poster: content/
 
 base:
   url: "http://localhost:8080"
