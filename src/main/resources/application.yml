@@ -38,7 +38,6 @@ server:
 project:
   poster: content/
 
-
 base:
   url: "http://localhost:8001"
 
