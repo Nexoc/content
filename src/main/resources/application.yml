@@ -32,9 +32,13 @@ spring:
           starttls:
             enable: true
 
+server:
+  port: 8001
+
 project:
   poster: content/
 
+
 base:
-  url: "http://localhost:8080"
+  url: "http://localhost:8001"
 
