@@ -2,6 +2,7 @@
 # it's created and returned access and refresh tokens
 #  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXZsQGdtYWlsLmNvbSIsImlhdCI6MTcxNTc3NDI5OCwiZXhwIjoxNzE1Nzc1NzM4fQ.bU0pzXWRiM2Ziq7cfAmxdKx62_zN92pZNFD-WoUA2Zg",
 #  "refreshToken": "c5fb851c-597f-43b2-afb5-8bd9adb59196"
+
 POST localhost:8080/api/v1/auth/register
 Content-Type: application/json
 

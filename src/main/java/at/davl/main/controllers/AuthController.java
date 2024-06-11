@@ -11,10 +11,7 @@ import at.davl.main.auth.utils.LoginRequest;
 import at.davl.main.auth.utils.RefreshTokenRequest;
 import at.davl.main.auth.utils.RegisterRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
@@ -30,6 +27,7 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
+    @CrossOrigin("http://localhost:8080")
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authService.register(registerRequest));
