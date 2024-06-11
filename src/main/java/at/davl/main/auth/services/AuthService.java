@@ -8,6 +8,7 @@ import at.davl.main.auth.repositories.UserRepository;
 import at.davl.main.auth.utils.AuthResponse;
 import at.davl.main.auth.utils.RegisterRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,11 +19,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final JwtService jwtService;
+    @Autowired
     private final RefreshTokenService refreshTokenService;
+    @Autowired
     private final AuthenticationManager authenticationManager;
+
 
     public AuthResponse register(RegisterRequest registerRequest) {
         // create user
