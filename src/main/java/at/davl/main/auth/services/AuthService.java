@@ -33,7 +33,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest registerRequest) {
 
-        System.out.println(registerRequest.getName() + registerRequest.getEmail() + registerRequest.getPassword());
+        // System.out.println(registerRequest.getName() + registerRequest.getEmail() + registerRequest.getPassword());
         // create user
         var user = User.builder()
                 .name(registerRequest.getName())
