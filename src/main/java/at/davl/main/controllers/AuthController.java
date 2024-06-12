@@ -27,17 +27,19 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
-    @CrossOrigin("http://localhost:8080")
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authService.register(registerRequest));
     }
 
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         RefreshToken refreshToken = refreshTokenService.verifyRefreshToken(refreshTokenRequest.getRefreshToken());

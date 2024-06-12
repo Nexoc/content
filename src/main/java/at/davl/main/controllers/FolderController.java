@@ -33,6 +33,7 @@ public class FolderController {
         this.contentService = contentService;
     }
 
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PostMapping("/add-folder")
     public ResponseEntity<FolderDto> addFolderHandler(
             @RequestPart String folderDto) throws IOException, EmptyFileException {
@@ -45,6 +46,7 @@ public class FolderController {
         );
     }
 
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     // @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @GetMapping("/{folderId}")
     public ResponseEntity<FolderDto> getFolderHandler(@PathVariable Integer folderId){
@@ -58,12 +60,13 @@ public class FolderController {
     }
 
 
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @GetMapping
     public ResponseEntity<List<FolderDto>> getAllFoldersByUserIdHandler(@PathVariable Integer userId) {
         return ResponseEntity.ok(folderService.getAllFoldersByUserId(userId));
     }
 
-
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PutMapping("/update/{folderId}")
     public ResponseEntity<FolderDto> updateFolderHandler(@PathVariable Integer userId,
                                                          @PathVariable Integer folderId,
@@ -72,7 +75,7 @@ public class FolderController {
         return ResponseEntity.ok(folderService.updateFolder(folderId, folderDto));
     }
 
-
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     // @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/{folderId}")
     public ResponseEntity<String> deleteFolderHandler(@PathVariable Integer userId,
@@ -80,6 +83,7 @@ public class FolderController {
         return ResponseEntity.ok(folderService.deleteFolder(folderId));
     }
 
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @GetMapping("/{folderId}/contents")
     public ResponseEntity<List<ContentDto>> getAllContentByFolderHandler(@PathVariable Integer userId,
                                                                          @PathVariable Integer folderId) {

@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: BackendAPI
   datasource:
     url: jdbc:postgresql://localhost:5432/content
     username: nexoc
@@ -40,4 +42,7 @@ project:
 
 base:
   url: "http://localhost:8001"
+
+cors:
+  allowedOrigin: http://localhost:8080
 
