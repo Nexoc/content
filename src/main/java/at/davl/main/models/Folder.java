@@ -4,6 +4,7 @@ import at.davl.main.auth.entities.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +24,8 @@ public class Folder {
     private Integer folderId;
 
     @Column(nullable = false)
-    private Integer number;
+    @NotBlank(message = "Please provide title")
+    private String title;
 
     @ManyToOne
     @JoinColumn(name="userId", nullable=false)

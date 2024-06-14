@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class FolderDto {
     private Integer folderId;
-    private Integer number;
+    private String title;
     @NotBlank(message = "Please provide owner")
     private Integer userId;
     private Set<Content> contents;
