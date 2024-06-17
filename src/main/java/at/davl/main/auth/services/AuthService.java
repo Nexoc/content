@@ -33,7 +33,6 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest registerRequest) {
 
-        // System.out.println(registerRequest.getName() + registerRequest.getEmail() + registerRequest.getPassword());
         // create user
         var user = User.builder()
                 .name(registerRequest.getName())
@@ -51,35 +50,30 @@ public class AuthService {
         var accessToken = jwtService.generateToken(savedUser);
         // create refresh token
         var refreshToken = refreshTokenService.createRefreshToken(savedUser.getEmail());
-
         // add and return access and refresh tokens
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
-                .username(savedUser.getUsername())
+                .userRole(String.valueOf(savedUser.getRole()))
+                .username(savedUser.getUserNickname())
                 .build();
     }
 
     public AuthResponse login(LoginRequest loginRequest) {
-
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
-
-
         var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         var accessToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(loginRequest.getEmail());
-
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
-                .username(user.getUsername())
+                .username(user.getUserNickname())
+                .userRole(String.valueOf(user.getRole()))
                 .build();
     }
-
-
 }

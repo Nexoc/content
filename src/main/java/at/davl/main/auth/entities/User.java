@@ -58,6 +58,8 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     private Set<Folder> folders;
 
+    public String getUserNickname() { return username; }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
