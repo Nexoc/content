@@ -56,6 +56,7 @@ public class AuthService {
                 .refreshToken(refreshToken.getRefreshToken())
                 .userRole(String.valueOf(savedUser.getRole()))
                 .username(savedUser.getUserNickname())
+                .userId(savedUser.getUserId())
                 .build();
     }
 
@@ -74,6 +75,7 @@ public class AuthService {
                 .refreshToken(refreshToken.getRefreshToken())
                 .username(user.getUserNickname())
                 .userRole(String.valueOf(user.getRole()))
+                .userId(user.getUserId())
                 .build();
     }
 }

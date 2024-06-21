@@ -167,7 +167,6 @@ public class ContentServiceImpl implements ContentService{
         Content cont = contentRepository.findById(contentId).orElseThrow(()
                 -> new ContentNotFoundException("Movie not found with id = " + contentId));
 
-
         // 2. if file is null, do nothing
         // but if file is not null, then delete existing file associated with the record,
         // and upload the new file

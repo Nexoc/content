@@ -52,14 +52,13 @@ public class FolderServiceImpl implements FolderService{
         // 2. save the folder object to DB
         Folder savedFolder = folderRepository.save(folder);
 
-        // 3.
+        // 3. add to response all data
         FolderDto response = new FolderDto(
                 savedFolder.getFolderId(),
                 savedFolder.getTitle(),
                 savedFolder.getUser().getUserId(),
                 savedFolder.getContents()
         );
-
         return response;
     }
 

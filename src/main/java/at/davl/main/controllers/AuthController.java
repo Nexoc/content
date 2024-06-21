@@ -33,6 +33,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(registerRequest));
     }
 
+
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {

@@ -12,12 +12,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/v1/users/{userId}/folders")
@@ -33,11 +33,11 @@ public class FolderController {
         this.contentService = contentService;
     }
 
+    //@CrossOrigin(origins = "http://10.0.2.15:8080/")
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PostMapping("/add-folder")
     public ResponseEntity<FolderDto> addFolderHandler(
             @RequestPart String folderDto) throws IOException, EmptyFileException {
-
         // convert from String to Dto
         FolderDto convertedDto = convertToFolderDto(folderDto);
         return new ResponseEntity<>(
@@ -47,24 +47,25 @@ public class FolderController {
     }
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
+    @GetMapping("/all")
+    public ResponseEntity<List<FolderDto>> getAllFoldersByUserIdHandler(@PathVariable Integer userId) {
+        return ResponseEntity.ok(folderService.getAllFoldersByUserId(userId));
+    }
+
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     // @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @GetMapping("/{folderId}")
     public ResponseEntity<FolderDto> getFolderHandler(@PathVariable Integer folderId){
         return ResponseEntity.ok(folderService.getFolder(folderId));
     }
 
+    /*
     // @PreAuthorize("hasAnyAuthority('ADMIN')") // @EnableMethodSecurity in SecurityConfiguration
     @GetMapping("/all")
     public ResponseEntity<List<FolderDto>> getAllFoldersHandler() {
         return ResponseEntity.ok(folderService.getAllFolder());
     }
-
-
-    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
-    @GetMapping
-    public ResponseEntity<List<FolderDto>> getAllFoldersByUserIdHandler(@PathVariable Integer userId) {
-        return ResponseEntity.ok(folderService.getAllFoldersByUserId(userId));
-    }
+     */
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PutMapping("/update/{folderId}")

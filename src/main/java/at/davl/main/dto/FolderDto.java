@@ -13,8 +13,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class FolderDto {
     private Integer folderId;
+    @NotBlank(message = "Please provide title")
     private String title;
     @NotBlank(message = "Please provide owner")
     private Integer userId;
     private Set<Content> contents;
 }
+
