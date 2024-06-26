@@ -13,6 +13,9 @@ import at.davl.main.auth.utils.RegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @RestController
 @RequestMapping("/api/v1/auth/")
 public class AuthController {

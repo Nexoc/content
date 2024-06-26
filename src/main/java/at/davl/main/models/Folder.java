@@ -27,10 +27,14 @@ public class Folder {
     @NotBlank(message = "Please provide title")
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name="userId", nullable=false)
-    private User user;
+    @Column(name = "userId", nullable = false)
+    //@ManyToOne
+    //@JoinColumn(name="userId", nullable=false)
+    private Integer userId;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "folder")
-    private Set<Content> contents;
+    @ElementCollection
+    @CollectionTable(name = "folder_contents", joinColumns = @JoinColumn(name = "folderId"))
+    @Column(name = "contentId")
+    // @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "folder")
+    private Set<Integer> content;
 }

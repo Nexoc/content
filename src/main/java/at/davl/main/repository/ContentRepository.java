@@ -12,8 +12,7 @@ import java.util.List;
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Integer> {
 
-
-    @Query("SELECT c FROM Content c WHERE c.folder.folderId = :folderId")
+    //@Query("SELECT c FROM Content c WHERE c.folderId = :folderId")
     List<Content> findAllContentsByFolderId(Integer folderId);
 
 }

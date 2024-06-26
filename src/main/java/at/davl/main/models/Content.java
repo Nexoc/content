@@ -2,6 +2,7 @@ package at.davl.main.models;
 
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -21,7 +22,7 @@ public class Content {
     private Integer contentId;
 
     @NotBlank(message = "The title field can't be blank")
-    @Column(unique = true, name = "title")
+    @Column(unique = false, name = "title")
     private String title;
 
     @NotBlank(message = "The content field can't be blank")
@@ -31,19 +32,19 @@ public class Content {
     @Column(name = "publishedOn")
     private LocalDateTime publishedOn;
 
-    // many screenshots
-    @Column(nullable = true, name = "screenshots")
-    private String screenshot;
+    // many files?
+    @Column(nullable = true, name = "file")
+    private String file;
 
-    @ManyToOne
-    @JoinColumn(name="folderId", nullable=false)
-    private Folder folder;
+    // @ManyToOne
+    // @JoinColumn(name="folderId", nullable=false)
+    private Integer folderId;
 
-    public Content(Integer contentId, String title, String content, String screenshot, Folder folder) {
+    public Content(Integer contentId, String title, String content, String file, Integer folderId) {
         this.title = title;
         this.content = content;
         this.publishedOn = LocalDateTime.now();
-        this.screenshot = screenshot;
-        this.folder = folder;
+        this.file = file;
+        this.folderId = folderId;
     }
 }

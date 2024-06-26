@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, Integer> {
 
-    @Query("SELECT f FROM Folder f WHERE f.user.userId = :userId")
+    @Query("SELECT f FROM Folder f WHERE f.userId = :userId")
     List<Folder> findAllFoldersByUserId(Integer userId);
 }

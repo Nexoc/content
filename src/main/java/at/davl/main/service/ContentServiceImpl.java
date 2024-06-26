@@ -42,19 +42,28 @@ public class ContentServiceImpl implements ContentService{
 
     @Override
     public ContentDto addContent(ContentDto contentDto, MultipartFile file) throws IOException {
+        // get necessary data
+        Integer folderId = contentDto.getFolderId();
+        Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
+        Integer userId = folder.getUserId();
+
         // 1. upload the file
         // 1.1 check if file already exists
+        // path is: path / userId / folderId / filename.png
+        /*if (Files.exists(Paths.get(path + File.separator + userId
+                + File.separator + folderId + File.separator + file.getOriginalFilename()))) {
+            throw new FileExistsException("File already exists, please choose a different filename");
+        }
+         */
+
         if (Files.exists(Paths.get(path + File.separator + file.getOriginalFilename()))) {
             throw new FileExistsException("File already exists, please choose a different filename");
         }
-
+        // to upload this file
         String uploadedFileName = fileService.uploadFile(path, file);
 
         // 2. set the value of field "poster" as filename
-        contentDto.setScreenshot(uploadedFileName);
-
-        Integer folderId = contentDto.getFolderId();
-        Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
+        contentDto.setFile(uploadedFileName);
 
         // 3. map dto to movie object
         Content content = new Content(
@@ -62,12 +71,11 @@ public class ContentServiceImpl implements ContentService{
                 contentDto.getTitle(),
                 contentDto.getContent(),
                 LocalDateTime.now(),
-                contentDto.getScreenshot(),
-                folder
+                contentDto.getFile(),
+                folderId
                 );
 
-
-        // 4. save the movie object -> saved Movie object
+        // 4. save the content object -> saved Content object
         Content savedContent = contentRepository.save(content);
 
         // generate the poster URL (full path). for now all in one folder
@@ -79,9 +87,9 @@ public class ContentServiceImpl implements ContentService{
                 savedContent.getTitle(),
                 savedContent.getContent(),
                 savedContent.getPublishedOn(),
-                savedContent.getScreenshot(),
+                savedContent.getFile(),
                 posterUrl,
-                savedContent.getFolder().getFolderId()
+                savedContent.getFolderId()
         );
 
         return response;
@@ -92,10 +100,10 @@ public class ContentServiceImpl implements ContentService{
 
         // 1. check the data in Db and if exists. fetch the data of given ID
         Content content = contentRepository.findById(contentId)
-                .orElseThrow(() -> new MovieNotFoundException("Screenshot is not found with id = " + contentId));
+                .orElseThrow(() -> new MovieNotFoundException("File is not found with id = " + contentId));
 
-        // 2. generate screenshot URL
-        String posterUrl = baseUrl + "/file/" + content.getScreenshot();
+        // 2. generate file URL
+        String posterUrl = baseUrl + "/file/" + content.getFile();
 
         // 3. map to the MovieDto object and return it (Code repeating, bit it is to understand a concept
         ContentDto response = new ContentDto(
@@ -103,9 +111,9 @@ public class ContentServiceImpl implements ContentService{
                 content.getTitle(),
                 content.getContent(),
                 content.getPublishedOn(),
-                content.getScreenshot(),
+                content.getFile(),
                 posterUrl,
-                content.getFolder().getFolderId()
+                content.getFolderId()
         );
         return response;
     }
@@ -120,16 +128,16 @@ public class ContentServiceImpl implements ContentService{
         // 2. iterate through the list, generate posterUrl for each poster object
         // and map to the MovieDto object
         for(Content content : contents) {
-            String posterUrl = baseUrl + "/file/" + content.getScreenshot();
+            String posterUrl = baseUrl + "/file/" + content.getFile();
 
             ContentDto response = new ContentDto(
                     content.getContentId(),
                     content.getTitle(),
                     content.getContent(),
                     content.getPublishedOn(),
-                    content.getScreenshot(),
+                    content.getFile(),
                     posterUrl,
-                    content.getFolder().getFolderId()
+                    content.getFolderId()
             );
             // add this dto to the list
             contentDtos.add(response);
@@ -145,15 +153,15 @@ public class ContentServiceImpl implements ContentService{
         List<ContentDto> contentDtos = new ArrayList<>();
 
         for (Content content : contents) {
-            String posterUrl = baseUrl + "/file/" + content.getScreenshot();
+            String posterUrl = baseUrl + "/file/" + content.getFile();
             ContentDto response = new ContentDto(
                     content.getContentId(),
                     content.getTitle(),
                     content.getContent(),
                     content.getPublishedOn(),
-                    content.getScreenshot(),
+                    content.getFile(),
                     posterUrl,
-                    content.getFolder().getFolderId()
+                    content.getFolderId()
             );
             contentDtos.add(response);
         }
@@ -170,17 +178,17 @@ public class ContentServiceImpl implements ContentService{
         // 2. if file is null, do nothing
         // but if file is not null, then delete existing file associated with the record,
         // and upload the new file
-        String fileName = cont.getScreenshot();
+        String fileName = cont.getFile();
         if(file != null) {
             Files.deleteIfExists(Paths.get(path + File.separator + fileName));
             fileName = fileService.uploadFile(path, file);
         }
 
-        // 3. set contentDto's screenshot value, according to step 2
-        contentDto.setScreenshot(fileName);
+        // 3. set contentDto's file value, according to step 2
+        contentDto.setFile(fileName);
 
-        Integer folderId = contentDto.getFolderId();
-        Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
+        //Integer folderId = contentDto.getFolderId();
+        //Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
 
         // 4. map it to Content object
         Content content = new Content(
@@ -188,15 +196,15 @@ public class ContentServiceImpl implements ContentService{
                 contentDto.getTitle(),
                 contentDto.getContent(),
                 contentDto.getPublishedOn(),
-                contentDto.getScreenshot(),
-                folder
+                contentDto.getFile(),
+                contentDto.getFolderId()
         );
 
         // 5. save the movie object -> return saved movie obj
         Content updatedContent = contentRepository.save(content);
 
-        // 6 screenshotUrl for it
-        String screenshotUrl = baseUrl + "/file/" + fileName;
+        // 6 FileUrl for it
+        String fileUrl = baseUrl + "/file/" + fileName;
 
         // 7. map to ContentDto and return it
         ContentDto response = new ContentDto(
@@ -204,9 +212,9 @@ public class ContentServiceImpl implements ContentService{
                 content.getTitle(),
                 content.getContent(),
                 content.getPublishedOn(),
-                content.getScreenshot(),
-                screenshotUrl,
-                content.getFolder().getFolderId()
+                content.getFile(),
+                fileUrl,
+                content.getFolderId()
         );
         return response;
     }
@@ -219,7 +227,7 @@ public class ContentServiceImpl implements ContentService{
                 -> new ContentNotFoundException("Movie not found with id = " + contentId));
         Integer id = cont.getContentId();
         // 2. delete the file associated with this object
-        Files.deleteIfExists(Paths.get(path + File.separator + cont.getScreenshot()));
+        Files.deleteIfExists(Paths.get(path + File.separator + cont.getFile()));
         // 3. delete the content object
         contentRepository.delete(cont);
         return "Content has been deleted with id: " + id;

@@ -17,6 +17,6 @@ public class FolderDto {
     private String title;
     @NotBlank(message = "Please provide owner")
     private Integer userId;
-    private Set<Content> contents;
+    private Set<Integer> contentIds;
 }
 

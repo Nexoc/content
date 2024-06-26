@@ -55,8 +55,11 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private ForgotPassword forgotPassword;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
-    private Set<Folder> folders;
+    @ElementCollection
+    @CollectionTable(name = "user_folders", joinColumns = @JoinColumn(name = "userId"))
+    @Column(name = "folderId")
+    // @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private Set<Folder> folderIds;
 
     public String getUserNickname() { return username; }
 

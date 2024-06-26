@@ -57,7 +57,7 @@ Content-Type: form-data
 
 folderDto {
               "folderId" : null,
-               "number" : 1,
+               "title" : "title",
               "userId" : 1
           }
 
