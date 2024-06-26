@@ -13,12 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
 
-
+@CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
 @RestController
 @RequestMapping("/api/v1/users/{userId}/folders")
 public class FolderController {
@@ -69,15 +70,14 @@ public class FolderController {
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @PutMapping("/update/{folderId}")
-    public ResponseEntity<FolderDto> updateFolderHandler(@PathVariable Integer userId,
-                                                         @PathVariable Integer folderId,
-                                                         @RequestPart String folderDtoObj) throws IOException {
+    public ResponseEntity<FolderDto> updateFolderHandler(
+                                                         @RequestPart String folderDtoObj) throws IOException, EmptyFileException {
+        System.out.println("Folder Service impl update()");
         FolderDto folderDto = convertToFolderDto(folderDtoObj);
-        return ResponseEntity.ok(folderService.updateFolder(folderId, folderDto));
+        return ResponseEntity.ok(folderService.updateFolder(folderDto));
     }
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
-    // @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/{folderId}")
     public ResponseEntity<String> deleteFolderHandler(@PathVariable Integer userId,
                                                       @PathVariable Integer folderId) throws IOException {

@@ -80,28 +80,12 @@ public class ContentController {
     private ContentDto convertToContentDto(String contentDtoObj) throws JsonProcessingException {
         // mapper (we need it for a map value to the contentDto class)
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("85");
         // it is mapped content to contentDto
         ContentDto contentDto = objectMapper.readValue(contentDtoObj, ContentDto.class);
 
         return contentDto;
     }
 }
-
-
-//org.springframework.beans.factory.UnsatisfiedDependencyException:
-// Error creating bean with name 'contentController' defined in file
-// [/home/nexoc/Java/Backend/content/target/classes/at/davl/main/controllers/ContentController.class]:
-// Unsatisfied dependency expressed through constructor parameter 0:
-    // Error creating bean with name 'contentServiceImpl'
-    // defined in file [/home/nexoc/Java/Backend/content/target/classes/at/davl/main/service/ContentServiceImpl.class]:
-        // Unsatisfied dependency expressed through constructor parameter 0:
-            // Error creating bean with name 'contentRepository'
-            // defined in at.davl.main.repository.ContentRepository
-            // defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration:
-            // Could not create query for public abstract java.util.List at.davl.main.repository.ContentRepository.findAllContentsByFolderId(java.lang.Integer);
-
-            // Reason: Validation failed for query for method public abstract java.util.List at.davl.main.repository.ContentRepository.findAllContentsByFolderId(java.lang.Integer)
 
 /*
 contentDto {

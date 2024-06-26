@@ -17,7 +17,7 @@ public interface FolderService {
 
     List<FolderDto> getAllFoldersByUserId (Integer userId);
 
-    FolderDto updateFolder(Integer folderId, FolderDto folderDto) throws IOException;
+    FolderDto updateFolder(FolderDto folderDto) throws IOException;
 
     String deleteFolder(Integer folderId) throws IOException;
 

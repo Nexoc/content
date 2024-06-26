@@ -79,7 +79,8 @@ public class ContentServiceImpl implements ContentService{
         Content savedContent = contentRepository.save(content);
 
         // generate the poster URL (full path). for now all in one folder
-        String posterUrl = baseUrl + "/file/" + uploadedFileName;
+        String filePath = baseUrl + "/file/" + uploadedFileName;
+        // System.out.println("file Path " + filePath);
 
         // 6. map content object to DTO object and return it
         ContentDto response = new ContentDto(
@@ -88,10 +89,9 @@ public class ContentServiceImpl implements ContentService{
                 savedContent.getContent(),
                 savedContent.getPublishedOn(),
                 savedContent.getFile(),
-                posterUrl,
+                filePath,
                 savedContent.getFolderId()
         );
-
         return response;
     }
 
@@ -103,7 +103,7 @@ public class ContentServiceImpl implements ContentService{
                 .orElseThrow(() -> new MovieNotFoundException("File is not found with id = " + contentId));
 
         // 2. generate file URL
-        String posterUrl = baseUrl + "/file/" + content.getFile();
+        String filePath = baseUrl + "/file/" + content.getFile();
 
         // 3. map to the MovieDto object and return it (Code repeating, bit it is to understand a concept
         ContentDto response = new ContentDto(
@@ -112,7 +112,7 @@ public class ContentServiceImpl implements ContentService{
                 content.getContent(),
                 content.getPublishedOn(),
                 content.getFile(),
-                posterUrl,
+                filePath,
                 content.getFolderId()
         );
         return response;

@@ -40,8 +40,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // just for tests requestMatchers("*").permitAll()
-
+                        // just for tests requestMatchers("*").permitAll() "/file/**"
                         .requestMatchers("/api/v1/auth/**", "/forgotPassword/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -52,16 +51,4 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    /*
-    @Bean
-    CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
-        // configuration.setAllowedMethods(Arrays.asList(""));
-        // configuration.setAllowedHeaders(List.of("GET", "POST"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("**", configuration);
-        return source;
-    }
-     */
 }
