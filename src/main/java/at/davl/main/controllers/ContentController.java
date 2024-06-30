@@ -45,9 +45,7 @@ public class ContentController {
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @GetMapping("/{contentId}")
-    public ResponseEntity<ContentDto> getContentHandler(@PathVariable Integer userId,
-                                                        @PathVariable Integer folderId,
-                                                        @PathVariable Integer contentId){
+    public ResponseEntity<ContentDto> getContentHandler(@PathVariable Integer contentId){
         return ResponseEntity.ok(contentService.getContent(contentId));
     }
 
@@ -68,7 +66,7 @@ public class ContentController {
         return ResponseEntity.ok(contentService.updateContent(contentId, convertedContent, file));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    // @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete/{contentId}")
     public ResponseEntity<String> deleteContentHandler(@PathVariable Integer contentId) throws IOException {
         return ResponseEntity.ok(contentService.deleteContent(contentId));

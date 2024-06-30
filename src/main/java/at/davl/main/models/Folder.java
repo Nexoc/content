@@ -23,7 +23,7 @@ public class Folder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer folderId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     @NotBlank(message = "Please provide title")
     private String title;
 

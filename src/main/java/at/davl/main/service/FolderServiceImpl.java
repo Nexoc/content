@@ -65,6 +65,7 @@ public class FolderServiceImpl implements FolderService{
                 .orElseThrow(() -> new FolderNotFoundException("Folder is not found with id = " + folderId));
 
         // 2. map to the FolderDto object and return it (Code repeating, bit it is to understand a concept
+        System.out.println("FolderService Impl -> getFolder -> getContent " + folder.getContent() );
         FolderDto response = new FolderDto(
                 folder.getFolderId(),
                 folder.getTitle(),
@@ -119,7 +120,7 @@ public class FolderServiceImpl implements FolderService{
 
         // 1. check if the folder obj exists with a given folderId
         Folder fold = folderRepository.findById(folderDto.getFolderId()).orElseThrow(()
-                -> new FolderNotFoundException("Folder not found with id = " + folderDto.getFolderId()));
+                -> new FolderNotFoundException("Folder is not found with id = " + folderDto.getFolderId()));
 
         User user = userRepository.findById(folderDto.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found" ));
 

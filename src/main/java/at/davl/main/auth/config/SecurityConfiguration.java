@@ -30,7 +30,6 @@ import java.util.List;
 public class SecurityConfiguration {
 
     private final AuthFilterService authFilterService;
-
     private final AuthenticationProvider authenticationProvider;
 
 
@@ -41,7 +40,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // just for tests requestMatchers("*").permitAll() "/file/**"
-                        .requestMatchers("/api/v1/auth/**", "/forgotPassword/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/forgotPassword/**", "file/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

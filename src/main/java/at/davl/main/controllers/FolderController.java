@@ -48,6 +48,14 @@ public class FolderController {
     }
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
+    @PutMapping("/update/{folderId}")
+    public ResponseEntity<FolderDto> updateFolderHandler(
+            @RequestPart String folderDto) throws IOException, EmptyFileException {
+        FolderDto convertedDto = convertToFolderDto(folderDto);
+        return ResponseEntity.ok(folderService.updateFolder(convertedDto));
+    }
+
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @GetMapping("/all")
     public ResponseEntity<List<FolderDto>> getAllFoldersByUserIdHandler(@PathVariable Integer userId) {
         return ResponseEntity.ok(folderService.getAllFoldersByUserId(userId));
@@ -67,15 +75,6 @@ public class FolderController {
         return ResponseEntity.ok(folderService.getAllFolder());
     }
      */
-
-    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
-    @PutMapping("/update/{folderId}")
-    public ResponseEntity<FolderDto> updateFolderHandler(
-                                                         @RequestPart String folderDtoObj) throws IOException, EmptyFileException {
-        System.out.println("Folder Service impl update()");
-        FolderDto folderDto = convertToFolderDto(folderDtoObj);
-        return ResponseEntity.ok(folderService.updateFolder(folderDto));
-    }
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @DeleteMapping("/delete/{folderId}")

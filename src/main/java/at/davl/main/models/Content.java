@@ -2,7 +2,6 @@ package at.davl.main.models;
 
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -22,11 +21,11 @@ public class Content {
     private Integer contentId;
 
     @NotBlank(message = "The title field can't be blank")
-    @Column(unique = false, name = "title")
+    @Column(unique = false, name = "title", length = 500)
     private String title;
 
     @NotBlank(message = "The content field can't be blank")
-    @Column(name = "content")
+    @Column(name = "content", length = Integer.MAX_VALUE)
     private String content;
 
     @Column(name = "publishedOn")

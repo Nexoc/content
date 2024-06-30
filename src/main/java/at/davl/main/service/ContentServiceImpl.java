@@ -149,7 +149,6 @@ public class ContentServiceImpl implements ContentService{
     public List<ContentDto> getAllContentByFolderId(Integer folderId) {
 
         List<Content> contents = contentRepository.findAllContentsByFolderId(folderId);
-
         List<ContentDto> contentDtos = new ArrayList<>();
 
         for (Content content : contents) {
@@ -221,16 +220,14 @@ public class ContentServiceImpl implements ContentService{
 
     @Override
     public String deleteContent(Integer contentId) throws IOException {
-
         // 1. check if content obj exists in DB
         Content cont = contentRepository.findById(contentId).orElseThrow(()
-                -> new ContentNotFoundException("Movie not found with id = " + contentId));
+                -> new ContentNotFoundException("Content not found with id = " + contentId));
         Integer id = cont.getContentId();
         // 2. delete the file associated with this object
         Files.deleteIfExists(Paths.get(path + File.separator + cont.getFile()));
         // 3. delete the content object
         contentRepository.delete(cont);
         return "Content has been deleted with id: " + id;
-
     }
 }
