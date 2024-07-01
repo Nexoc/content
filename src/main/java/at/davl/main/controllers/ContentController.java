@@ -44,6 +44,19 @@ public class ContentController {
     }
 
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
+    @PutMapping("/update/{contentId}")
+    public ResponseEntity<ContentDto> updateContentHandler(@PathVariable Integer contentId,
+                                                           @RequestPart MultipartFile file,
+                                                           @RequestPart String contentDto) throws IOException, EmptyFileException {
+
+        if (file.isEmpty()) {
+            throw new EmptyFileException("File is empty. Please send another file");
+        }
+        ContentDto convertedContent = convertToContentDto(contentDto);
+        return ResponseEntity.ok(contentService.updateContent(contentId, convertedContent, file));
+    }
+
+    @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @GetMapping("/{contentId}")
     public ResponseEntity<ContentDto> getContentHandler(@PathVariable Integer contentId){
         return ResponseEntity.ok(contentService.getContent(contentId));
@@ -53,17 +66,6 @@ public class ContentController {
     @GetMapping("/all")
     public ResponseEntity<List<ContentDto>> getAllContentsHandler() {
         return ResponseEntity.ok(contentService.getAllContent());
-    }
-
-
-    @PutMapping("/update/{contentId}")
-    public ResponseEntity<ContentDto> updateContentHandler(@PathVariable Integer contentId,
-                                                       @RequestPart MultipartFile file,
-                                                       @RequestPart String contentDtoObj) throws IOException {
-
-        if (file.isEmpty()) file = null;
-        ContentDto convertedContent = convertToContentDto(contentDtoObj);
-        return ResponseEntity.ok(contentService.updateContent(contentId, convertedContent, file));
     }
 
     // @PreAuthorize("hasAnyAuthority('ADMIN')")

@@ -95,6 +95,58 @@ public class ContentServiceImpl implements ContentService{
         return response;
     }
 
+
+
+    @Override
+    public ContentDto updateContent(Integer contentId, ContentDto contentDto, MultipartFile file) throws IOException {
+        // 1. check if the content obj exists with a given contentId
+        Content cont = contentRepository.findById(contentId).orElseThrow(()
+                -> new ContentNotFoundException("Content not found with id = " + contentId));
+
+        // 2. if file is null, do nothing
+        // but if file is not null, then delete existing file associated with the record,
+        // and upload the new file
+        String fileName = cont.getFile();
+        if(file != null) {
+            Files.deleteIfExists(Paths.get(path + File.separator + fileName));
+            fileName = fileService.uploadFile(path, file);
+        }
+
+        // 3. set contentDto's file value, according to step 2
+        contentDto.setFile(fileName);
+
+        //Integer folderId = contentDto.getFolderId();
+        //Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
+
+        // 4. map it to Content object
+        Content content = new Content(
+                cont.getContentId(),
+                contentDto.getTitle(),
+                contentDto.getContent(),
+                contentDto.getPublishedOn(),
+                contentDto.getFile(),
+                contentDto.getFolderId()
+        );
+
+        // 5. save the movie object -> return saved movie obj
+        Content updatedContent = contentRepository.save(content);
+
+        // 6 FileUrl for it
+        String fileUrl = baseUrl + "/file/" + fileName;
+
+        // 7. map to ContentDto and return it
+        ContentDto response = new ContentDto(
+                content.getContentId(),
+                content.getTitle(),
+                content.getContent(),
+                content.getPublishedOn(),
+                content.getFile(),
+                fileUrl,
+                content.getFolderId()
+        );
+        return response;
+    }
+
     @Override
     public ContentDto getContent(Integer contentId) {
 
@@ -167,56 +219,6 @@ public class ContentServiceImpl implements ContentService{
         return contentDtos;
     }
 
-
-    @Override
-    public ContentDto updateContent(Integer contentId, ContentDto contentDto, MultipartFile file) throws IOException {
-        // 1. check if the content obj exists with a given contentId
-        Content cont = contentRepository.findById(contentId).orElseThrow(()
-                -> new ContentNotFoundException("Movie not found with id = " + contentId));
-
-        // 2. if file is null, do nothing
-        // but if file is not null, then delete existing file associated with the record,
-        // and upload the new file
-        String fileName = cont.getFile();
-        if(file != null) {
-            Files.deleteIfExists(Paths.get(path + File.separator + fileName));
-            fileName = fileService.uploadFile(path, file);
-        }
-
-        // 3. set contentDto's file value, according to step 2
-        contentDto.setFile(fileName);
-
-        //Integer folderId = contentDto.getFolderId();
-        //Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new FolderNotFoundException("Content not found with id: " + folderId));;
-
-        // 4. map it to Content object
-        Content content = new Content(
-                cont.getContentId(),
-                contentDto.getTitle(),
-                contentDto.getContent(),
-                contentDto.getPublishedOn(),
-                contentDto.getFile(),
-                contentDto.getFolderId()
-        );
-
-        // 5. save the movie object -> return saved movie obj
-        Content updatedContent = contentRepository.save(content);
-
-        // 6 FileUrl for it
-        String fileUrl = baseUrl + "/file/" + fileName;
-
-        // 7. map to ContentDto and return it
-        ContentDto response = new ContentDto(
-                content.getContentId(),
-                content.getTitle(),
-                content.getContent(),
-                content.getPublishedOn(),
-                content.getFile(),
-                fileUrl,
-                content.getFolderId()
-        );
-        return response;
-    }
 
     @Override
     public String deleteContent(Integer contentId) throws IOException {

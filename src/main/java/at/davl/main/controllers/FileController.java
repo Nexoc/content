@@ -41,8 +41,6 @@ public class FileController {
     @CrossOrigin(origins = "#{corsConfig.allowedOrigin}")
     @GetMapping("/{fileName}")
     public void serverFileHandler(@PathVariable String fileName, HttpServletResponse response) throws IOException {
-        System.out.println("File Controller server file handler 44");
-        System.out.println(" filename: " + fileName);
         // get a file in input stream
         InputStream resourceFile = fileService.getResourceFile(path, fileName);
         // it is converting to the *PNG format
