@@ -33,7 +33,6 @@ public class User implements UserDetails {
     private String name;
 
     @NotBlank(message = "The username field can't be blank")
-    @Column(unique = true)
     private String username;
 
     @NotBlank(message = "The  email field can't be blank")
@@ -42,7 +41,6 @@ public class User implements UserDetails {
     private String email;
 
     @NotBlank(message = "The password field can't be blank")
-    @Column(unique = true)
     @Size(min = 5, message = "The password must be at least 5 characters")
     private String password;
 
